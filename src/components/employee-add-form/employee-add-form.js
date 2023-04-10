@@ -25,19 +25,21 @@ class EmployeeAddForm extends Component {
                 <h3>Добавьте нового сотрудника</h3>
                 <form onSubmit={(e) => {
                     e.preventDefault();
-                    onAdd(this.state);
-                    this.clearForm();
-                    }}
+                    if (this.state.name && this.state.salary) {
+                        onAdd(this.state);
+                        this.clearForm();
+                    }
+                }}
                     className="add-form d-flex">
                     <input type="text"
-                        name="name" 
-                        value={this.state.name} 
+                        name="name"
+                        value={this.state.name}
                         className="form-control new-post-label"
                         placeholder="Как его зовут?"
                         onChange={this.onValueChange} />
                     <input type="number"
-                        name="salary" 
-                        value={this.state.salary} 
+                        name="salary"
+                        value={this.state.salary}
                         className="form-control new-post-label"
                         placeholder="З/П в $?"
                         onChange={this.onValueChange} />

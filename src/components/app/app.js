@@ -12,11 +12,11 @@ class App extends Component {
         this.idCurr = 10;
         this.state = {
             data: [
-                {name: 'Alex N.', salary: 900, increase: true, id: 1},
-                {name: 'Mike M.', salary: 800, increase: false, id: 2},
-                {name: 'Sam J.', salary: 760, increase: false, id: 3},
-                {name: 'Nickolas O.', salary: 500, increase: true, id: 4},
-                {name: 'Olga F.', salary: 980, increase: false, id: 5},
+                {name: 'Alex N.', salary: 900, increase: true, rise: false,id: 1},
+                {name: 'Mike M.', salary: 800, increase: false, rise: false, id: 2},
+                {name: 'Sam J.', salary: 760, increase: false, rise: false,id: 3},
+                {name: 'Nickolas O.', salary: 500, increase: true, rise: false,id: 4},
+                {name: 'Olga F.', salary: 980, increase: false, rise: true,id: 5},
             ]
         };
     }
@@ -34,16 +34,29 @@ class App extends Component {
         this.setState( {data: newData} );
     }
 
+    onToggleProp = (id, prop) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if(id === item.id) return {...item, [prop]: !item[prop]};
+                return item;
+            })
+        }));
+    }
+
     render() {
         const { data } = this.state;
+        const incresed = data.filter(item => item.increase).length;
+        const count = data.length;
         return (
             <div className="app">
-                <AppInfo />
+                <AppInfo count={ count } increased={ incresed } />
                 <div className="search-panel">
                     <SearchPanel />
                     <AppFilter />
                 </div>
-                <EmployeeList data={ data } onDelete={ this.onItemDelete } />
+                <EmployeeList data={ data } 
+                            onToggleProp={ this.onToggleProp } 
+                            onDelete={ this.onItemDelete } />
                 <EmployeeAddForm onAdd={this.onItemAdd} />
             </div>
         );
