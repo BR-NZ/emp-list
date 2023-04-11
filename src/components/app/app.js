@@ -75,6 +75,15 @@ class App extends Component {
         });
     }
 
+    onValueChange = (id, prop, value) => {
+        this.setState(({ data }) => ({
+            data: data.map(item => {
+                if (id === item.id) return { ...item, [prop]: value }
+                return item;
+            })
+        }));
+    }
+
     render() {
         const { data, filter, term } = this.state;
 
@@ -92,7 +101,8 @@ class App extends Component {
                 </div>
                 <EmployeeList data={visibleData}
                     onToggleProp={this.onToggleProp}
-                    onDelete={this.onItemDelete} />
+                    onDelete={this.onItemDelete}
+                    onValueChange={this.onValueChange} />
                 <EmployeeAddForm onAdd={this.onItemAdd} />
             </div>
         );
