@@ -14,10 +14,11 @@ class App extends Component {
             data: [
                 { name: 'Alex N.', salary: 900, increase: true, rise: false, id: 1 },
                 { name: 'Mike M.', salary: 800, increase: false, rise: false, id: 2 },
-                { name: 'Sam J.', salary: 760, increase: false, rise: false, id: 3 },
+                { name: 'Sam J.', salary: 1060, increase: false, rise: false, id: 3 },
                 { name: 'Nickolas O.', salary: 500, increase: true, rise: false, id: 4 },
-                { name: 'Olga F.', salary: 980, increase: false, rise: true, id: 5 },
+                { name: 'Olga F.', salary: 2980, increase: false, rise: true, id: 5 },
             ],
+            filterMode: 'all',
             term: ''
         };
     }
@@ -52,26 +53,40 @@ class App extends Component {
         });
     }
 
+    filterItems = (items, mode = 'all') => {
+        return items.filter(item => {
+            if(mode === 'rise') return item.rise;
+            if(mode === '>1000') return item.salary > 1000;
+            return true;
+        });
+    }
+
     onUpdateSearch = (term) => {
         this.setState({
             term: term
         });
     }
 
+    onToggleFilter = (mode = 'all') => {
+        this.setState({
+            filterMode: mode
+        });
+    }
+
     render() {
-        const { data, term } = this.state;
+        const { data, filterMode, term } = this.state;
 
         const incresed = data.filter(item => item.increase).length;
         const count = data.length;
 
-        const visibleData = this.searchItems(data, term);
+        const visibleData = this.filterItems(this.searchItems(data, term), filterMode);
 
         return (
             <div className="app">
                 <AppInfo count={ count } increased={ incresed } />
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={ this.onUpdateSearch }/>
-                    <AppFilter />
+                    <AppFilter onToggleFilter={ this.onToggleFilter }/>
                 </div>
                 <EmployeeList data={ visibleData }
                     onToggleProp={ this.onToggleProp }
